@@ -16,19 +16,18 @@ app.post("/send", async (req, res) => {
   const data = req.body.emailData
   const { apartman, jmeno, prijmeni, pocet, email, tel, pDatum, oDatum } = data
 
-  async function main() {
-    let transporter = nodemailer.createTransport({
+  const main = async () => {
+    const transporter = nodemailer.createTransport({
       service: "gmail",
       host: "smtp.gmail.com",
       port: 587,
       secure: false,
       auth: {
-        user: LOGIN_G,
-        pass: APP_PASS,
+        user: process.env.LOGIN_G,
+        pass: process.env.APP_PASS,
       },
     })
-
-    let info = await transporter.sendMail({
+    const info = await transporter.sendMail({
       from: '"Fred Foo 👻" <foo@example.com>',
       to: "vaclav.wolf.vlcek@gmail.com",
       subject: "Hello ✔",
@@ -40,15 +39,18 @@ app.post("/send", async (req, res) => {
       <b>Email ${email}</b><br>
       <b>Tel - ${tel}</b><br>
       <b>Od - ${pDatum}</b><br>
-      <b>Do -${oDatum}</b><br>`,
+      <b>Do ${oDatum}</b><br>`,
     })
 
     console.log("Message sent: %s", info.messageId)
     console.log("Preview URL: %s", nodemailer.getTestMessageUrl(info))
   }
-  main().catch(console.error)
-
-  res.json("done")
+  try {
+    await main()
+    res.json("done")
+  } catch (e) {
+  } finally {
+  }
 })
 
 app.listen(port, () => {
