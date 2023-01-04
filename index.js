@@ -23,8 +23,8 @@ app.post("/send", async (req, res) => {
       port: 587,
       secure: false,
       auth: {
-        user: process.env.LOGIN_G,
-        pass: process.env.APP_PASS,
+        user: LOGIN_G,
+        pass: APP_PASS,
       },
     })
 
@@ -40,7 +40,7 @@ app.post("/send", async (req, res) => {
       <b>Email ${email}</b><br>
       <b>Tel - ${tel}</b><br>
       <b>Od - ${pDatum}</b><br>
-      <b>Do ${oDatum}</b><br>`,
+      <b>Do -${oDatum}</b><br>`,
     })
 
     console.log("Message sent: %s", info.messageId)
